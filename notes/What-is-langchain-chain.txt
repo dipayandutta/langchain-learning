@@ -1,0 +1,114 @@
+What is a langchain chain?
+==============================
+A langchain chain is a workflow that connects multiple components together to perform a complex task.
+
+
+
+ASCII Diagram:
+--------------
+Input -> Component 1 -> Component 2 -> Component 3 -> Output
+
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│   Component │───▶│   Component │───▶│   Component │───▶│   Component │
+│      #1     │    │      #2     │    │      #3     │    │      #4     │
+└─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
+       │                   │                   │                   │
+       ▼                   ▼                   ▼                   ▼
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│   Input     │    │ Processing  │    │ Processing  │    │   Output     │
+│   Data      │    │   Step 1    │    │   Step 2    │    │   Result     │
+└─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
+
+                    ┌─────────────────────────────────────┐
+                    │        LANGCHAIN CHAIN              │
+                    │  (Workflow connecting components)   │
+                    │                                     │
+                    │  Input → Process → Process → Output  │
+                    └─────────────────────────────────────┘
+
+
+Each step can be LLM Call , a prompt , a plate date , a tool call etc.
+And even be another chain .
+
+
+Example:
+--------
+Input -> LLM Call -> Prompt -> Tool Call -> Output
+
+
+Instead of asking a model one big question , we might have want to format 
+the user input query first. Into a structured format.
+
+We want to send this prompt to the LLM. 
+
+Then we want to parse the llms output into some structured data, and 
+then use this data to call to an External API response into another LLM 
+prompt . 
+
+And feed the API response into another LLM prompt .
+
+Flowchart
+=========
+
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   User Input    │───▶│  Format Query   │───▶│   Send Prompt   │
+│   (Raw Query)   │    │ (Structured     │    │     to LLM      │
+│                 │    │   Format)       │    │                 │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+                                │                        │
+                                ▼                        ▼
+                        ┌─────────────────┐    ┌─────────────────┐
+                        │   Input Query   │    │   LLM Output    │
+                        │   Formatted     │    │   (Raw Text)    │
+                        │                 │    │                 │
+                        └─────────────────┘    └─────────────────┘
+                                                        │
+                                                        ▼
+                                                ┌─────────────────┐
+                                                │  Parse LLM      │───▶
+                                                │  Output into    │
+                                                │  Structured     │
+                                                │  Data           │
+                                                └─────────────────┘
+                                                        │
+                                                        ▼
+                                                ┌─────────────────┐
+                                                │  Structured     │───▶
+                                                │  Data           │
+                                                │  (JSON/Dict)    │
+                                                └─────────────────┘
+                                                        │
+                                                        ▼
+                                                ┌─────────────────┐
+                                                │  Call External  │───▶
+                                                │  API with Data  │
+                                                │                 │
+                                                └─────────────────┘
+                                                        │
+                                                        ▼
+                                                ┌─────────────────┐
+                                                │  API Response   │───▶
+                                                │                 │
+                                                │                 │
+                                                └─────────────────┘
+                                                        │
+                                                        ▼
+                                                ┌─────────────────┐
+                                                │  Feed API       │
+                                                │  Response into  │
+                                                │  Another LLM    │
+                                                │  Prompt         │
+                                                └─────────────────┘
+                                                        │
+                                                        ▼
+                                                ┌─────────────────┐
+                                                │  Final LLM      │
+                                                │  Output         │
+                                                │                 │
+                                                └─────────────────┘
+
+COMPLETE WORKFLOW:
+┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+│ User Input  │→│ Format      │→│ LLM Call    │→│ Parse        │→│ API Call    │→│ LLM Call    │→│ Final Output │
+│ (Raw)       │ │ Query       │ │ #1          │ │ Output       │ │ (External)  │ │ #2          │ │             │
+└─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘
