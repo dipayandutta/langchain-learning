@@ -1,0 +1,8 @@
+What is a Prompt Template?
+===========================
+
+A prompt template simply a wrapper class around a prompt string that can be used to generate LLM calls.
+
+Run the prompt many times with different inputs .
+And the gist of it is that it simply helps us format things into 
+strings, which are eventually passed to the LLM.
