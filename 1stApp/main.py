@@ -24,7 +24,8 @@ def main():
     """
 
     summary_template = """
-    You are a helpful assistant that can summarize {information} about a person I want you to create:
+    You are a helpful assistant that can summarize {information} about a person I want you to create Crete using 
+    two points with heading:
     1. A short summary.
     2. Two interesting facts about this person.
     """
@@ -52,6 +53,18 @@ def main():
     chain = summary_prompt_template | llm # Runnable invoke 
     response = chain.invoke(input={"information": information})
     print(response.content)
+    
+    # Print token usage information
+    if hasattr(response, 'usage_metadata'):
+        print("\n" + "="*50)
+        print("TOKEN USAGE:")
+        print("="*50)
+        usage = response.usage_metadata
+        print(f"Input Tokens:  {usage.get('input_tokens', 'N/A')}")
+        print(f"Output Tokens: {usage.get('output_tokens', 'N/A')}")
+        print(f"Total Tokens:  {usage.get('total_tokens', 'N/A')}")
+    else:
+        print("\nToken usage information not available for this model.")
     '''
     # Create a chain
     summary_chain = LLMChain(llm=llm, prompt=summary_prompt_template)
