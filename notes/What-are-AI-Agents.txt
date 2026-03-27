@@ -1,0 +1,196 @@
+What is an AI Agent ?
+=======================
+
+An Agent is a software system that uses LLM's as a resoning engine
+to decide what action to take next.
+
+┌─────────────────────────────────────────────────────────────────┐
+│                        AI AGENT                                │
+│               (Software System)                                │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+                    ┌─────────────────────┐
+                    │                     │
+                    │    LLM as           │
+                    │  Reasoning Engine   │
+                    │                     │
+                    └─────────────────────┘
+                                │
+                                ▼
+                    ┌─────────────────────┐
+                    │   Decision Making   │───▶ What Action
+                    │                     │       to Take?
+                    │   "Should I...?"    │
+                    │   "What next?"      │
+                    └─────────────────────┘
+                                │
+                                ▼
+                    ┌─────────────────────┐
+                    │                     │
+                    │      ACTION         │
+                    │                     │
+                    │  • Call API         │
+                    │  • Use Tool         │
+                    │  • Search Web       │
+                    │  • Run Code         │
+                    │  • Ask User         │
+                    │  • Wait/Think       │
+                    └─────────────────────┘
+                                │
+                                ▼
+                    ┌─────────────────────┐
+                    │     RESULT          │
+                    │   (Action Output)   │
+                    └─────────────────────┘
+                                │
+                                ▼
+                    ┌─────────────────────┐
+                    │   FEEDBACK LOOP     │
+                    │   (Back to LLM)     │
+                    └─────────────────────┘
+
+SIMPLIFIED FLOW:
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│   INPUT     │───▶│   LLM as    │───▶│   DECIDE    │───▶│   ACTION    │
+│  (Task)     │    │  Reasoning  │    │  ACTION     │    │  EXECUTE    │
+└─────────────┘    │   Engine    │    └─────────────┘    └─────────────┘
+                   └─────────────┘            │                   │
+                         │                   ▼                   ▼
+                         │            ┌─────────────┐    ┌─────────────┐
+                         └───────────▶│   NEXT      │◀───│   RESULT    │
+                                      │   ACTION?   │    │   FEEDBACK  │
+                                      └─────────────┘    └─────────────┘
+
+
+Agents Dynamically Determined which tools or steps need to be taken to sove a 
+specific questions.
+
+
+
+Start --> Step 1 --> LLM(Brain) --> Step 2 --> End 
+            |            |
+            |            v
+            |            |
+            ----------Feedback Loop 
+
+
+In Real world Scenario:
+Start --> Step 1 --> LLM(Brain) --> Step 2 --> End 
+            |            |
+            |            v
+            |            |
+            ----------Feedback Loop 
+
+Taking a LLM and giving it tools to act in the world.Like API Call, Web Search, Code Execution, etc.
+
+
+ReAct Agent Architecture
+==========================
+
+ReAct stands for **Re**asoning and **Act**ing - a framework that combines 
+reasoning (thinking) and acting (doing) in a loop.
+
+ReAct Pattern:
+--------------
+1. **Thought** - Reason about what to do next
+2. **Action** - Choose and execute a tool/action  
+3. **Observation** - Review the result of the action
+4. **Repeat** - Continue until task is complete
+
+
+ASCII Diagram of ReAct Agent:
+-----------------------------
+
+┌─────────────────────────────────────────────────────────────────┐
+│                     REACT AGENT ARCHITECTURE                    │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+                    ┌─────────────────────┐
+                    │      START          │
+                    │   (User Query)      │
+                    └─────────────────────┘
+                                │
+                                ▼
+                    ┌─────────────────────┐
+                    │                     │
+                    │     THOUGHT #1      │
+                    │   "I need to..."    │
+                    │   "Let me think..." │
+                    └─────────────────────┘
+                                │
+                                ▼
+                    ┌─────────────────────┐
+                    │                     │
+                    │     ACTION #1       │
+                    │   • Search Web      │
+                    │   • Call API        │
+                    │   • Run Code        │
+                    │   • Use Calculator  │
+                    └─────────────────────┘
+                                │
+                                ▼
+                    ┌─────────────────────┐
+                    │                     │
+                    │   OBSERVATION #1    │
+                    │   (Action Result)   │
+                    │   "Found data..."   │
+                    │   "API returned..." │
+                    └─────────────────────┘
+                                │
+                                ▼
+                    ┌─────────────────────┐
+                    │   Task Complete?    │───▶ YES ──▶┌─────────────┐
+                    │                     │           │   FINAL     │
+                    │   NO ───────────────┘           │   ANSWER    │
+                    └─────────────────────┘           └─────────────┘
+                                │
+                                ▼
+                    ┌─────────────────────┐
+                    │                     │
+                    │     THOUGHT #2      │
+                    │   "Based on result" │
+                    │   "Next I should..."│
+                    └─────────────────────┘
+                                │
+                                ▼
+                                ... (REPEAT LOOP)
+
+
+Simplified ReAct Loop:
+---------------------
+
+┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
+│ THOUGHT  │───▶│  ACTION  │───▶│OBSERVATION│───▶│  THOUGHT  │
+│"Think"   │    │"Do"      │    │"See"     │    │"Think"   │
+└──────────┘    └──────────┘    └──────────┘    └──────────┘
+      │                                         │
+      ▼                                         ▼
+┌──────────┐                                 ┌──────────┐
+│"What should│                                 │"What did  │
+│I do next?"│                                 │I learn?"  │
+└──────────┘                                 └──────────┘
+      │                                         │
+      └─────────────────┬───────────────────────┘
+                        ▼
+                ┌─────────────────────┐
+                │   CONTINUE UNTIL    │
+                │   TASK COMPLETE     │
+                └─────────────────────┘
+
+
+Example ReAct Conversation:
+---------------------------
+
+User: "What's the current weather in New York and should I bring an umbrella?"
+
+THOUGHT 1: "I need to find the current weather in New York City"
+ACTION 1: "Search for current weather in New York"
+OBSERVATION 1: "Temperature: 65°F, Rain: 80% chance, Wind: 15 mph"
+
+THOUGHT 2: "Based on the weather data, there's an 80% chance of rain. I should recommend bringing an umbrella."
+ACTION 2: "Provide recommendation based on weather data"
+OBSERVATION 2: "Final answer prepared"
+
+FINAL ANSWER: "It's 65°F in New York with an 80% chance of rain. Yes, you should definitely bring an umbrella!"
