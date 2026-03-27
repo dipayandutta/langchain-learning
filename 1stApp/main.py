@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 #from langchain.chains import LLMChain
+from langchain_ollama import ChatOllama
 
 load_dotenv() # loads the environmental variable  from .env file 
 
@@ -33,7 +34,8 @@ def main():
     )
     # A tempurate of 0.7 means the model will be 30% creative and 70% deterministic
     # Result value near to 1.0 means the model will be more creative
-    llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.3) # This llm variable calling the LLM 
+    #llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.3) # This llm variable calling the LLM 
+    llm = ChatOllama(model="gemma3:270m", temperature=0.3) # This llm variable calling the LLM 
 
     # LCEL  (Langchain Expression Language)
     '''
@@ -49,7 +51,7 @@ def main():
     '''
     chain = summary_prompt_template | llm # Runnable invoke 
     response = chain.invoke(input={"information": information})
-    print(response)
+    print(response.content)
     '''
     # Create a chain
     summary_chain = LLMChain(llm=llm, prompt=summary_prompt_template)
