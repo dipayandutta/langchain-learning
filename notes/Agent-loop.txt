@@ -1,0 +1,271 @@
+Agent Loop Flowchart
+=====================
+
+The Agent Loop follows the ReAct (Reasoning + Acting) pattern to solve complex tasks.
+Here's the complete flow of how an agent thinks and acts:
+
+DETAILED AGENT LOOP FLOWCHART
+------------------------------
+
+┌─────────────────────────────────────────────────────────────────┐
+│                    AGENT EXECUTION LOOP                        │
+│                    (ReAct Pattern)                             │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+                    ┌─────────────────────┐
+                    │   USER QUERY        │
+                    │                     │
+                    │ "What is the weather │
+                    │  in New York?"      │
+                    └─────────────────────┘
+                                │
+                                ▼
+                    ┌─────────────────────┐
+                    │                     │
+                    │   THOUGHT #1        │
+                    │                     │
+                    │ "I need to find     │
+                    │  current weather    │
+                    │  information for    │
+                    │  New York"          │
+                    └─────────────────────┘
+                                │
+                                ▼
+                    ┌─────────────────────┐
+                    │   TOOL NEEDED?      │───▶ NO ──▶┌─────────────┐
+                    │                     │           │   ANSWER    │
+                    │ "Do I need to use   │           │  DIRECTLY  │
+                    │  a tool?"           │           │             │
+                    │                     │           └─────────────┘
+                    │   YES ─────────────┘                    │
+                    └─────────────────────┘                    │
+                                │                            ▼
+                                ▼              ┌─────────────────────┐
+                    ┌─────────────────────┐    │     FINAL          │
+                    │   ACTION #1         │    │     RESPONSE       │
+                    │                     │    │                     │
+                    │ "Use search tool    │    │ "Based on my       │
+                    │  to find weather"   │    │  knowledge..."     │
+                    │                     │    └─────────────────────┘
+                    └─────────────────────┘
+                                │
+                                ▼
+                    ┌─────────────────────┐
+                    │   TOOL EXECUTION    │
+                    │                     │
+                    │ search_weather(     │
+                    │ "New York")        │
+                    └─────────────────────┘
+                                │
+                                ▼
+                    ┌─────────────────────┐
+                    │   OBSERVATION #1    │
+                    │                     │
+                    │ "Temperature: 72°F   │
+                    │  Sunny, Wind: 5mph" │
+                    └─────────────────────┘
+                                │
+                                ▼
+                    ┌─────────────────────┐
+                    │   THOUGHT #2        │
+                    │                     │
+                    │ "I have weather     │
+                    │  data. Can I answer │
+                    │  the user now?"     │
+                    └─────────────────────┘
+                                │
+                                ▼
+                    ┌─────────────────────┐
+                    │   TASK COMPLETE?    │───▶ NO ──┐
+                    │                     │        │
+                    │ "Is the user's      │        │
+                    │  question fully     │        │
+                    │  answered?"         │        │
+                    │                     │        │
+                    │   YES ─────────────┘        │
+                    └─────────────────────┘        │
+                                │                 │
+                                ▼                 ▼
+                    ┌─────────────────────┐  ┌─────────────────────┐
+                    │   FINAL ANSWER      │  │   CONTINUE LOOP     │
+                    │                     │  │                     │
+                    │ "The weather in     │  │   Go back to        │
+                    │  New York is 72°F   │  │   THOUGHT #2        │
+                    │  and sunny"        │  │   with new info     │
+                    └─────────────────────┘  └─────────────────────┘
+
+
+SIMPLIFIED AGENT LOOP
+---------------------
+
+┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
+│  QUERY   │───▶│ THOUGHT  │───▶│  ACTION  │───▶│OBSERVATION│
+│"Question"│    │"Think"   │    │"Do"      │    │"See"     │
+└──────────┘    └──────────┘    └──────────┘    └──────────┘
+                                │                 │
+                                ▼                 ▼
+                        ┌─────────────┐  ┌─────────────┐
+                        │TOOL NEEDED? │  │GOT RESULT  │
+                        └─────────────┘  └─────────────┘
+                                │                 │
+                                ▼                 ▼
+                        ┌─────────────┐  ┌─────────────┐
+                        │USE TOOL     │  │THINK AGAIN  │
+                        └─────────────┘  └─────────────┘
+                                │                 │
+                                └─────────┬───────┘
+                                          ▼
+                                  ┌─────────────┐
+                                  │TASK DONE?   │
+                                  └─────────────┘
+                                        │
+                           YES ───────┴─────── NO
+                                        ▼
+                                ┌─────────────┐
+                                │FINAL ANSWER │
+                                └─────────────┘
+
+
+DECISION TREE FLOW (This is most important)
+------------------
+
+                    ┌─────────────┐
+                    │   QUERY     │
+                    └─────────────┘
+                          │
+                          ▼
+                    ┌─────────────┐
+                    │   THOUGHT   │
+                    └─────────────┘
+                          │
+                          ▼
+                ┌─────────────────────┐
+                │   NEED TOOL?       │
+                └─────────────────────┘
+                 /                   \
+            YES /                     \ NO
+               /                       \
+              ▼                         ▼
+    ┌─────────────┐           ┌─────────────┐
+    │   ACTION    │           │   ANSWER    │
+    └─────────────┘           └─────────────┘
+          │                           │
+          ▼                           ▼
+    ┌─────────────┐           ┌─────────────┐
+    │OBSERVATION  │           │   FINAL     │
+    └─────────────┘           │   RESPONSE  │
+          │                   └─────────────┘
+          ▼
+    ┌─────────────┐
+    │   THOUGHT   │
+    └─────────────┘
+          │
+          ▼
+    ┌─────────────────────┐
+    │   TASK COMPLETE?    │
+    └─────────────────────┘
+         /           \
+    YES /             \ NO
+       /               \
+      ▼                 ▼
+┌─────────────┐  ┌─────────────┐
+│   FINAL     │  │   LOOP      │
+│  RESPONSE   │  │   BACK      │
+└─────────────┘  └─────────────┘
+
+
+AGENT LOOP WITH EXAMPLE
+------------------------
+
+Step 1: QUERY
+┌─────────────────────────────────────────────────────────────────┐
+│ "What are the top 3 restaurants in Paris and their ratings?"   │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+
+Step 2: THOUGHT
+┌─────────────────────────────────────────────────────────────────┐
+│ "I need to find current information about restaurants in       │
+│  Paris. This requires real-time data, so I should use a        │
+│  search tool to get accurate ratings and information."         │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+
+Step 3: ACTION
+┌─────────────────────────────────────────────────────────────────┐
+│ "Use web search tool to find top restaurants in Paris"        │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+
+Step 4: OBSERVATION
+┌─────────────────────────────────────────────────────────────────┐
+│ "Found: 1. Le Bernardin (4.8★), 2. L'Ami Jean (4.6★),        │
+│  3. Le Comptoir du Relais (4.5★)"                          │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+
+Step 5: THOUGHT
+┌─────────────────────────────────────────────────────────────────┐
+│ "I have the restaurant information with ratings. This answers  │
+│  the user's question completely. I can provide the final      │
+│  response."                                                  │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+
+Step 6: FINAL RESPONSE
+┌─────────────────────────────────────────────────────────────────┐
+│ "The top 3 restaurants in Paris are:                         │
+│  1. Le Bernardin - 4.8 stars                                │
+│  2. L'Ami Jean - 4.6 stars                                  │
+│  3. Le Comptoir du Relais - 4.5 stars"                      │
+└─────────────────────────────────────────────────────────────────┘
+
+
+KEY COMPONENTS OF THE LOOP
+---------------------------
+
+1. **QUERY**: User's input/question
+   - Starting point of the loop
+   - Contains the task to be solved
+
+2. **THOUGHT**: Agent's reasoning step
+   - Analyzes the query
+   - Plans the approach
+   - Decides if tools are needed
+
+3. **ACTION**: Tool execution step
+   - Calls appropriate tools
+   - Performs the planned action
+   - Only happens if tools are needed
+
+4. **OBSERVATION**: Result from tool
+   - Receives tool output
+   - Processes the information
+   - Feeds back to thinking
+
+5. **DECISION POINTS**:
+   - Tool needed? (YES/NO)
+   - Task complete? (YES/NO)
+
+6. **LOOP CONTROL**:
+   - Continues until task is complete
+   - Can make multiple tool calls
+   - Adapts based on observations
+
+
+LOOP TERMINATION CONDITIONS
+---------------------------
+
+The agent loop ends when:
+- Task is fully completed
+- Maximum iterations reached
+- Error occurs that cannot be recovered
+- User stops the process
+
+This structured approach ensures agents can handle complex tasks by breaking them down into manageable steps.
