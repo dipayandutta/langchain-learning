@@ -1,0 +1,22 @@
+Provider Strategy
+==================
+
+Some model providers support structured output natively through thier API's.
+This is the preferred approach as it is more efficient and accurate also the reliable one.
+
+    [*] Schema Required [*]
+    The Schema defining the structured output format.
+
+        - Pydantic Models: BaseModel subclass with field validation.
+        - Dataclasses: Python Dataclasses with type annotations.
+        - TypedDict: Typed dictonary classes.
+        - JSON Schema: Dictonary with JSON schema specification.
+
+    [*] Tool Call Strategy [*]
+    
+    For modeels that don't support native structured output, LangChain uses tool calling to achieve the same result.
+    This works with all models that support tool calling.
+    Which is most modern models.
+
+    
+        
